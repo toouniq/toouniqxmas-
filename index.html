@@ -462,6 +462,52 @@ textarea.field{border-radius:20px;resize:vertical;min-height:64px}
 .payapps .payapp:last-child:nth-child(odd){grid-column:1/-1}
 @media (hover:hover) and (pointer:fine){.gpay-btn,#otherApps{display:none}.paybox .gp{border:0;padding:0}}
 
+/* rock band stage (one deliberate dark look in both themes) */
+.band{padding-block:26px 6px}
+.band-stage{position:relative;overflow:hidden;border-radius:28px;min-height:clamp(250px,40vw,380px);background:radial-gradient(ellipse at 50% 120%,#5a1f3a 0,#2a1230 45%,#140a18 100%);box-shadow:0 18px 40px #0005;isolation:isolate;padding:58px 6% 34px;display:flex;flex-direction:column;justify-content:flex-end}
+.band-curtain{position:absolute;inset:0 0 auto;height:40px;z-index:3;background:radial-gradient(circle at 50% 0,#c8324b 18px,transparent 19px) 0 0/40px 40px repeat-x,linear-gradient(#a3213b,#a3213b) 0 0/100% 14px no-repeat}
+.band-side{position:absolute;top:0;bottom:0;width:6%;z-index:3;background:repeating-linear-gradient(90deg,#a3213b 0 6px,#c8324b 6px 12px)}
+.band-side.l{left:0;border-radius:0 0 40px 0}.band-side.r{right:0;border-radius:0 0 0 40px}
+.beams{position:absolute;inset:0;z-index:0;pointer-events:none}
+.beams i{position:absolute;top:-10%;width:34%;height:120%;transform-origin:50% 0;clip-path:polygon(46% 0,54% 0,100% 100%,0 100%);background:linear-gradient(to bottom,hsla(var(--h,45),100%,70%,.55),transparent 85%);mix-blend-mode:screen;opacity:.35;transition:background .4s}
+.beams i:nth-child(1){left:2%;--h:0;transform:rotate(-14deg)}.beams i:nth-child(2){left:22%;--h:45;transform:rotate(8deg)}
+.beams i:nth-child(3){left:44%;--h:140;transform:rotate(-8deg)}.beams i:nth-child(4){left:64%;--h:200;transform:rotate(14deg)}
+.band.playing .beams i{opacity:.6;animation:sweep calc(var(--bt,.4s) * 4) ease-in-out infinite alternate}
+.band.playing .beams i:nth-child(even){animation-direction:alternate-reverse}
+@keyframes sweep{from{rotate:-16deg}to{rotate:16deg}}
+.band-sign{position:absolute;top:44px;left:50%;transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:8px;background:#1b0f1ecc;border:2px solid #ffc857;border-radius:999px;padding:5px 14px 5px 8px;white-space:nowrap;max-width:86%}
+.band-sign h2{font:700 clamp(.85rem,2.4vw,1.15rem) var(--font-display);color:#ffe9b8;letter-spacing:.04em;overflow:hidden;text-overflow:ellipsis}
+.live-dot{display:inline-flex;align-items:center;gap:5px;background:#c8324b;color:#fff;font:800 .68rem var(--font-body);letter-spacing:.08em;border-radius:999px;padding:3px 8px}
+.live-dot::before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;opacity:.5}
+.band.playing .live-dot::before{opacity:1;animation:blink 1s infinite}
+.band-row{position:relative;z-index:2;display:flex;justify-content:center;align-items:flex-end;gap:1.5%;margin-top:26px}
+.performer{position:relative;flex:0 1 15%;max-width:130px;min-width:0;background:none;border:0;padding:0;cursor:pointer;transform-origin:50% 100%;color:#ffe9b8;-webkit-tap-highlight-color:transparent}
+.performer svg{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 6px #0008)}
+.performer.lead{flex-basis:18%;max-width:150px}
+.performer small{display:block;text-align:center;font:700 clamp(.58rem,1.7vw,.78rem)/1.15 var(--font-display);margin-top:2px;text-shadow:0 1px 3px #000}
+.performer:focus-visible{outline:3px solid #ffc857;outline-offset:2px;border-radius:12px}
+.band.playing .performer{animation:var(--anim,bob) calc(var(--bt,.4s) * 2) ease-in-out infinite}
+.performer.solo{animation:solo .7s ease-out!important}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes rockout{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg) translateY(-4px)}}
+@keyframes headbang{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(5px) rotate(4deg)}}
+@keyframes hopsing{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(-16px) scale(1.04)}}
+@keyframes keysway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes saxlean{0%,100%{transform:rotate(6deg)}50%{transform:rotate(-8deg) translateY(-3px)}}
+@keyframes solo{30%{transform:translateY(-22px) scale(1.12)}}
+.performer .sticks{transform-origin:60px 70px}
+.band.playing .performer .sticks{animation:hit var(--bt,.4s) ease-in-out infinite}
+@keyframes hit{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
+.band-floor{position:absolute;left:0;right:0;bottom:0;height:46px;z-index:1;background:linear-gradient(#5a3420,#3a2214);box-shadow:0 -6px 24px #ffc85744}
+.band.playing .band-floor{animation:floorglow var(--bt,.4s) ease-out infinite}
+@keyframes floorglow{0%{box-shadow:0 -10px 40px #ffc85799}100%{box-shadow:0 -6px 18px #ffc85733}}
+.mnote{position:absolute;z-index:5;font:700 1.4rem var(--font-display);color:#ffe9b8;pointer-events:none;text-shadow:0 0 8px #ffc857;animation:mnote 1.4s ease-out forwards}
+@keyframes mnote{from{transform:translateY(0) scale(.6);opacity:1}to{transform:translateY(-90px) rotate(20deg) scale(1.2);opacity:0}}
+.band-ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
+.band-play[aria-pressed="true"]{background:var(--pine)}
+.band-now{margin:0;font-weight:800;color:var(--ink-soft);flex:1 1 220px;min-width:0}
+@media (max-width:560px){.band-stage{padding:52px 7% 30px}.band-sign{top:40px}.band-row{gap:.5%}.performer{flex-basis:16%}.performer.lead{flex-basis:19%}}
+
 /* inventory */
 .limited.out{background:#5c5c5c}
 .limited.hot{background:var(--cran);animation:hotpulse 1.6s ease-in-out infinite}
@@ -648,6 +694,23 @@ details.gp .qrframe{display:inline-block}
     </div>
   </section>
   <div class="scallop" aria-hidden="true"></div>
+
+  <section class="band wrap" id="band" aria-labelledby="bandTitle">
+    <div class="band-stage" id="bandStage">
+      <div class="band-curtain" aria-hidden="true"></div>
+      <div class="band-side l" aria-hidden="true"></div><div class="band-side r" aria-hidden="true"></div>
+      <div class="beams" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="band-sign"><span class="live-dot">LIVE</span><h2 id="bandTitle">Toouniq Christmas Rock Band</h2></div>
+      <div class="band-row" id="bandRow"></div>
+      <div class="band-floor" aria-hidden="true"></div>
+    </div>
+    <div class="band-ctrl">
+      <button class="btn btn-cran band-play" type="button" id="bandPlay" aria-pressed="false"><span id="bandPlayIcon">▶</span> <span id="bandPlayLbl">Start the show</span></button>
+      <button class="btn btn-ghost-dark" type="button" id="bandNext">Next song ⏭</button>
+      <p class="band-now" id="bandNow" aria-live="polite">Tap a band member for a solo!</p>
+    </div>
+  </section>
+
   <section class="notice" aria-label="Stock update">
     <div class="wrap">
       <b>More is coming soon!</b>
@@ -1054,7 +1117,7 @@ const SND = (() => {
   }
   function hush() { if (voiceBus && ctx) { try { voiceBus.gain.setTargetAtTime(0, ctx.currentTime, .02); } catch (e) {} } }
   function setOn(v) { on = v; store.set('toouniq-sound', v); if (!v) hush(); else ensure(); }
-  return { play, speak, laugh, hush, setOn, isOn: () => on, setMusic, musicOn: () => musicOn };
+  return { play, speak, laugh, hush, setOn, isOn: () => on, setMusic, musicOn: () => musicOn, audio: () => { if (!on) return null; const c = ensure(); return c ? { ctx: c, master } : null; } };
 })();
 
 /* ---------- Google Analytics 4 (only runs when CONFIG.ga4Id is set and the page is on your own website) ---------- */
@@ -1938,10 +2001,10 @@ $('#footLogo').src = 'img/toouniq-logo.jpg';
 /* ---------- sound + music toggles ---------- */
 const soundBtn = $('#soundBtn');
 soundBtn.setAttribute('aria-pressed', String(SND.isOn()));
-soundBtn.addEventListener('click', () => { const v = !SND.isOn(); SND.setOn(v); soundBtn.setAttribute('aria-pressed', String(v)); if (v) SND.play('chime'); toast(v ? 'Christmas sounds on' : 'Sounds off'); });
+soundBtn.addEventListener('click', () => { const v = !SND.isOn(); if (!v && typeof BAND !== 'undefined') BAND.stop(); SND.setOn(v); soundBtn.setAttribute('aria-pressed', String(v)); if (v) SND.play('chime'); toast(v ? 'Christmas sounds on' : 'Sounds off'); });
 const musicBtn = $('#musicBtn');
 const paintMusic = () => { const v = SND.musicOn(); musicBtn.setAttribute('aria-pressed', String(v)); $('#musicLbl').textContent = v ? 'Pause music' : 'Play Jingle Bells'; };
-musicBtn.addEventListener('click', () => { SND.setMusic(!SND.musicOn()); paintMusic(); if (SND.musicOn()) gaTrack('play_music'); });
+musicBtn.addEventListener('click', () => { if (!SND.musicOn() && typeof BAND !== 'undefined') BAND.stop(); SND.setMusic(!SND.musicOn()); paintMusic(); if (SND.musicOn()) gaTrack('play_music'); });
 addEventListener('music-stopped', paintMusic);
 $('.santa-btn').addEventListener('pointerenter', () => SND.play('sparkle'));
 
@@ -1992,6 +2055,197 @@ $('#orderId').textContent = orderId;
 const _sync = sync;
 sync = function () { _sync(); if ($('#stepNext')) { const empty = !totals().l.length; $('#stepNext').disabled = empty; $('#stepNext').textContent = empty ? 'Your cart is empty' : `Checkout · ${money(totals().grand)}`; if (empty && coStep !== 1) goStep(1); } };
 goStep(1);
+
+/* ---------- Toouniq Christmas Rock Band ---------- */
+ART.reindeer = () => `
+  <ellipse cx="60" cy="113" rx="26" ry="4" fill="${INK}" opacity=".15"/>
+  <rect x="46" y="96" width="9" height="16" rx="4" fill="#7a4b2a"/><rect x="65" y="96" width="9" height="16" rx="4" fill="#7a4b2a"/>
+  <rect x="40" y="66" width="40" height="38" rx="17" fill="#a8683e"/><ellipse cx="60" cy="88" rx="12" ry="12" fill="#e8c49a"/>
+  <path d="M48 34L40 16M44 26L32 22M41 18L36 10M72 34L80 16M76 26L88 22M79 18L84 10" stroke="#7a4b2a" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <ellipse cx="39" cy="42" rx="9" ry="5" fill="#a8683e" transform="rotate(-25 39 42)"/><ellipse cx="81" cy="42" rx="9" ry="5" fill="#a8683e" transform="rotate(25 81 42)"/>
+  <circle cx="60" cy="48" r="18" fill="#b9784a"/><ellipse cx="60" cy="58" rx="11" ry="8" fill="#e8c49a"/>
+  <circle cx="53" cy="45" r="2.4" fill="${INK}"/><circle cx="67" cy="45" r="2.4" fill="${INK}"/>
+  <ellipse cx="47" cy="51" rx="3.4" ry="2.1" fill="${BLUSH}" opacity=".85"/><ellipse cx="73" cy="51" rx="3.4" ry="2.1" fill="${BLUSH}" opacity=".85"/>
+  <circle cx="60" cy="55" r="5.5" fill="#e8243c"/><circle cx="58.3" cy="53.3" r="1.6" fill="#fff" opacity=".8"/>
+  <path d="M56 62q4 3 8 0" stroke="${INK}" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <rect x="43" y="64" width="34" height="7" rx="3.5" fill="#d7263d"/><path d="M48 64v7M56 64v7M64 64v7M72 64v7" stroke="#fff" stroke-width="2.5"/>`;
+ART.penguin = () => `
+  <ellipse cx="60" cy="113" rx="26" ry="4" fill="${INK}" opacity=".15"/>
+  <ellipse cx="48" cy="109" rx="9" ry="4" fill="#ff9f43"/><ellipse cx="72" cy="109" rx="9" ry="4" fill="#ff9f43"/>
+  <ellipse cx="31" cy="80" rx="7" ry="16" fill="#2a2a3a" transform="rotate(18 31 80)"/><ellipse cx="89" cy="80" rx="7" ry="16" fill="#2a2a3a" transform="rotate(-18 89 80)"/>
+  <ellipse cx="60" cy="76" rx="29" ry="35" fill="#2a2a3a"/><ellipse cx="60" cy="84" rx="20" ry="25" fill="#fff"/>
+  <ellipse cx="60" cy="56" rx="17" ry="13" fill="#fff"/>
+  <circle cx="53" cy="53" r="2.4" fill="${INK}"/><circle cx="67" cy="53" r="2.4" fill="${INK}"/>
+  <ellipse cx="47" cy="59" rx="3.4" ry="2.1" fill="${BLUSH}" opacity=".85"/><ellipse cx="73" cy="59" rx="3.4" ry="2.1" fill="${BLUSH}" opacity=".85"/>
+  <path d="M55 58h10l-5 7z" fill="#ff9f43"/>
+  <path d="M40 46Q50 14 82 20Q74 30 80 46z" fill="#d7263d"/><rect x="38" y="42" width="45" height="8" rx="4" fill="#fff"/><circle cx="82" cy="20" r="5" fill="#fff"/>`;
+const INSTR = {
+  guitar: `<g><path d="M44 94L100 56" stroke="#7a4b2a" stroke-width="5" stroke-linecap="round"/><rect x="96" y="50" width="10" height="7" rx="2" fill="#3b2230" transform="rotate(-34 101 53)"/>
+    <ellipse cx="44" cy="96" rx="16" ry="12" fill="#ffc857" stroke="#b5482f" stroke-width="2.5"/><ellipse cx="34" cy="99" rx="9" ry="8" fill="#ffc857"/><circle cx="46" cy="94" r="4" fill="#3b2230"/>
+    <path d="M40 98L100 57M42 100L101 59" stroke="#fff" stroke-width=".8" opacity=".8"/></g>`,
+  bass: `<g><path d="M42 96L106 48" stroke="#5c3a24" stroke-width="5" stroke-linecap="round"/><rect x="101" y="42" width="10" height="7" rx="2" fill="#3b2230" transform="rotate(-37 106 45)"/>
+    <ellipse cx="42" cy="98" rx="16" ry="12" fill="#4a8fd6" stroke="#1f3d6b" stroke-width="2.5"/><ellipse cx="31" cy="101" rx="9" ry="8" fill="#4a8fd6"/><rect x="38" y="94" width="10" height="5" rx="1" fill="#1b1b1b"/></g>`,
+  mic: `<g><path d="M98 118L84 66" stroke="#b9b9c4" stroke-width="3.5" stroke-linecap="round"/><path d="M90 118h16" stroke="#b9b9c4" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="83" cy="60" rx="6" ry="8" fill="#3b3b48" transform="rotate(-16 83 60)"/><path d="M79 56l8 2M78 60l8 2" stroke="#8a8a96" stroke-width="1.2"/></g>`,
+  drums: `<g><path d="M14 66h26" stroke="#ffc857" stroke-width="3" stroke-linecap="round"/><path d="M27 66v40" stroke="#b9b9c4" stroke-width="2"/>
+    <ellipse cx="34" cy="84" rx="12" ry="5" fill="#d7263d"/><rect x="22" y="84" width="24" height="10" fill="#b51f33"/><ellipse cx="86" cy="84" rx="12" ry="5" fill="#d7263d"/><rect x="74" y="84" width="24" height="10" fill="#b51f33"/>
+    <circle cx="60" cy="98" r="18" fill="#fff" stroke="#d7263d" stroke-width="4"/><path d="M60 88l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3-5.7-3-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z" fill="#ffc857"/>
+    <g class="sticks"><path d="M44 74L30 64M76 74L90 64" stroke="#8a5a3a" stroke-width="3" stroke-linecap="round"/></g></g>`,
+  keys: `<g><rect x="12" y="86" width="96" height="20" rx="4" fill="#2a2340"/><rect x="16" y="90" width="88" height="11" rx="2" fill="#fff"/>
+    <path d="M27 90v7M38 90v7M55 90v7M66 90v7M77 90v7M94 90v7" stroke="#2a2340" stroke-width="4"/><path d="M22 106v10M98 106v10" stroke="#2a2340" stroke-width="3"/>
+    <circle cx="20" cy="88" r="1.5" fill="#7fe0b5"/><circle cx="26" cy="88" r="1.5" fill="#ffc857"/></g>`,
+  sax: `<g><path d="M64 62Q72 70 66 90Q60 106 46 100" stroke="#e0a526" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <circle cx="42" cy="98" r="8" fill="#e0a526"/><circle cx="42" cy="98" r="4.5" fill="#7a5410"/><circle cx="66" cy="78" r="2" fill="#fff8"/><circle cx="64" cy="86" r="2" fill="#fff8"/><path d="M60 58l6 6" stroke="#3b2230" stroke-width="3" stroke-linecap="round"/></g>`
+};
+const BANDMATES = [
+  { id: 'rudolph', name: 'Rudolph', role: 'bass', art: 'reindeer', col: [], ins: 'bass', anim: 'headbang' },
+  { id: 'santa', name: 'Santa', role: 'guitar', art: 'santa', col: ['#d7263d', '#ffffff', '#ffc857'], ins: 'guitar', anim: 'rockout' },
+  { id: 'ginger', name: 'Ginger', role: 'vocals', art: 'gingerbread', col: ['#c98a55', '#ffffff', '#e8506a'], ins: 'mic', anim: 'hopsing', lead: true },
+  { id: 'snowman', name: 'Mr. Snowy', role: 'drums', art: 'snowman', col: ['#d7263d', '#ffffff', '#3b2230'], ins: 'drums', anim: 'bob' },
+  { id: 'elf', name: 'Twinkle', role: 'keys', art: 'elf', col: ['#2f8a63', '#d7263d', '#ffc857'], ins: 'keys', anim: 'keysway' },
+  { id: 'penguin', name: 'Pip', role: 'sax', art: 'penguin', col: [], ins: 'sax', anim: 'saxlean' }
+];
+$('#bandRow').innerHTML = BANDMATES.map(m => `<button class="performer${m.lead ? ' lead' : ''}" type="button" data-mate="${m.id}" style="--anim:${m.anim}" aria-label="${m.name} on ${m.role}. Tap for a solo">
+  <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">${ART[m.art](m.col, 'band' + m.id)}${INSTR[m.ins]}</svg><small>${m.name} · ${m.role}</small></button>`).join('');
+
+const BAND = (() => {
+  // classic public-domain carols, arranged as rock
+  const SONGS = [
+    { title: 'Jingle Bells', bpm: 160, bpb: 4, chords: 'C C C C F C D G C C C C F C G C',
+      mel: 'E5 1,E5 1,E5 2,E5 1,E5 1,E5 2,E5 1,G5 1,C5 1.5,D5 .5,E5 4,F5 1,F5 1,F5 1.5,F5 .5,F5 1,E5 1,E5 1,E5 .5,E5 .5,E5 1,D5 1,D5 1,E5 1,D5 2,G5 2,E5 1,E5 1,E5 2,E5 1,E5 1,E5 2,E5 1,G5 1,C5 1.5,D5 .5,E5 4,F5 1,F5 1,F5 1.5,F5 .5,F5 1,E5 1,E5 1,E5 .5,E5 .5,G5 1,G5 1,F5 1,D5 1,C5 4' },
+    { title: 'Deck the Halls', bpm: 150, bpb: 4, chords: 'C C G C C C G C G A D G C C F C',
+      mel: 'G5 1.5,F5 .5,E5 1,D5 1,C5 1,D5 1,E5 1,C5 1,D5 .5,E5 .5,F5 .5,D5 .5,E5 1.5,D5 .5,C5 1,B4 1,C5 2,G5 1.5,F5 .5,E5 1,D5 1,C5 1,D5 1,E5 1,C5 1,D5 .5,E5 .5,F5 .5,D5 .5,E5 1.5,D5 .5,C5 1,B4 1,C5 2,D5 1.5,E5 .5,F5 1,D5 1,E5 1.5,F5 .5,G5 1,D5 1,E5 .5,F#5 .5,G5 1,A5 .5,B5 .5,C6 1,B5 1,A5 1,G5 2,G5 1.5,F5 .5,E5 1,D5 1,C5 1,D5 1,E5 1,C5 1,A5 .5,A5 .5,A5 .5,A5 .5,G5 1.5,F5 .5,E5 1,D5 1,C5 2' },
+    { title: 'Joy to the World', bpm: 140, bpb: 4, chords: 'C G F C F G C C',
+      mel: 'C6 2,B5 1.5,A5 .5,G5 3,F5 1,E5 2,D5 2,C5 3,G5 1,A5 3,A5 1,B5 3,B5 1,C6 4,- 4' },
+    { title: 'We Wish You a Merry Christmas', bpm: 176, bpb: 3, chords: 'C F D G E F G C',
+      mel: 'C5 1,C5 .5,D5 .5,C5 .5,B4 .5,A4 1,A4 1,A4 1,D5 1,D5 .5,E5 .5,D5 .5,C5 .5,B4 1,G4 1,G4 1,E5 1,E5 .5,F5 .5,E5 .5,D5 .5,C5 1,A4 1,G4 .5,G4 .5,A4 1,D5 1,B4 1,C5 2,G4 1' }
+  ];
+  const PC = { C: 0, 'C#': 1, D: 2, Eb: 3, E: 4, F: 5, 'F#': 6, G: 7, Ab: 8, A: 9, Bb: 10, B: 11 };
+  const midi = s => { const m = s.match(/^([A-G][#b]?)(\d)$/); return 12 * (+m[2] + 1) + PC[m[1]]; };
+  const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+  SONGS.forEach(s => {
+    let b = 0; s.notes = s.mel.split(',').map(x => { const [n, d] = x.trim().split(' '); const e = { at: b, m: n === '-' ? null : midi(n), d: +d }; b += +d; return e; });
+    s.roots = s.chords.split(' ').map(c => PC[c]); s.beats = b;
+  });
+  let A = null, bus = null, shaper = null, noiseBuf = null, playing = false, timer = null, raf = 0;
+  let song = null, songIdx = -1, bar = 0, rep = 0, nextBar = 0, beat = .4, marks = [];
+  const stage = $('#band');
+  function ready() {
+    const a = SND.audio(); if (!a) return false; A = a.ctx;
+    if (!bus) {
+      bus = A.createGain(); bus.gain.value = .85;
+      const comp = A.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 6;
+      bus.connect(comp); comp.connect(a.master);
+      shaper = A.createWaveShaper(); const n = 1024, curve = new Float32Array(n);
+      for (let i = 0; i < n; i++) { const x = i * 2 / n - 1; curve[i] = (3 + 28) * x * 20 * Math.PI / 180 / (Math.PI + 28 * Math.abs(x)); }
+      shaper.curve = curve; const lp = A.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2600; shaper.connect(lp); lp.connect(bus);
+    }
+    if (!noiseBuf) { noiseBuf = A.createBuffer(1, A.sampleRate * 2, A.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+    return true;
+  }
+  function env(t, dur, peak, dest, attack = .005) { const g = A.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + dur); g.connect(dest); return g; }
+  function osc(type, f, t, dur, dest, det = 0) { const o = A.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t); o.detune.value = det; o.connect(dest); o.start(t); o.stop(t + dur + .03); return o; }
+  function hiss(t, dur, vol, type, freq) { const s = A.createBufferSource(); s.buffer = noiseBuf; const f = A.createBiquadFilter(); f.type = type; f.frequency.value = freq; s.connect(f); f.connect(env(t, dur, vol, bus, .002)); s.start(t, Math.random()); s.stop(t + dur + .03); }
+  const kick = t => { const o = A.createOscillator(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + .14); o.connect(env(t, .3, .9, bus, .003)); o.start(t); o.stop(t + .33); };
+  const snare = t => { hiss(t, .16, .38, 'highpass', 1400); osc('triangle', 190, t, .09, env(t, .09, .25, bus)); };
+  const hat = (t, v = .1) => hiss(t, .045, v, 'highpass', 7500);
+  const crash = t => hiss(t, 1.3, .16, 'highpass', 4800);
+  function bassNote(t, m, dur) { const f = A.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 650; f.connect(env(t, dur, .32, bus)); osc('sawtooth', hz(m), t, dur, f); osc('square', hz(m - 12), t, dur, f); }
+  function chug(t, m, dur, v = .16) { const g = env(t, dur, v, shaper); [0, 7, 12].forEach((iv, i) => osc('sawtooth', hz(m + iv), t, dur, g, i ? 6 : -6)); }
+  function lead(t, m, dur, kind = 'lead') {
+    const f = A.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = kind === 'sax' ? 1800 : 3600;
+    const g = A.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(kind === 'keys' ? .14 : .17, t + .015);
+    g.gain.setValueAtTime(kind === 'keys' ? .08 : .15, t + Math.max(.03, dur * .7)); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    f.connect(g); g.connect(bus);
+    const lfo = A.createOscillator(), lg = A.createGain(); lfo.frequency.value = 5.5; lg.gain.value = kind === 'keys' ? 0 : 14; lfo.connect(lg);
+    const types = kind === 'keys' ? ['triangle', 'sine'] : kind === 'sax' ? ['sawtooth', 'triangle'] : ['square', 'sawtooth'];
+    types.forEach((ty, i) => { const o = osc(ty, hz(m) * (kind === 'keys' && i ? 2 : 1), t, dur, f, i ? 7 : 0); lg.connect(o.detune); });
+    lfo.start(t); lfo.stop(t + dur + .03);
+  }
+  function scheduleBar(t) {
+    const s = song, bpb = s.bpb, root = s.roots[bar % s.roots.length], bassM = 36 + root, gtrM = 48 + root;
+    const last = bar === s.roots.length - 1;
+    for (let i = 0; i < bpb * 2; i++) { const tt = t + i * beat / 2; hat(tt, i % 2 ? .06 : .1); bassNote(tt, bassM + (i === bpb * 2 - 1 && !last ? 0 : 0), beat / 2 * .9); chug(tt, gtrM, beat / 2 * (i % 2 ? .45 : .7), i % 2 ? .1 : .16); }
+    if (bpb === 4) { kick(t); kick(t + 2 * beat); kick(t + 2.5 * beat); snare(t + beat); snare(t + 3 * beat); }
+    else { kick(t); snare(t + beat); snare(t + 2 * beat); }
+    if (last) for (let i = 0; i < 4; i++) snare(t + (bpb - 1) * beat + i * beat / 4);
+    if (bar % 4 === 0) crash(t);
+    const b0 = bar * bpb, b1 = b0 + bpb;
+    s.notes.forEach(e => { if (e.m && e.at >= b0 && e.at < b1) lead(t + (e.at - b0) * beat, e.m, e.d * beat * .95); });
+    for (let i = 0; i < bpb; i++) marks.push({ t: t + i * beat, down: i === 0, bar });
+  }
+  function pickSong(force) {
+    let i; do { i = Math.floor(Math.random() * SONGS.length); } while (SONGS.length > 1 && i === songIdx);
+    songIdx = force != null ? force : i; song = SONGS[songIdx]; beat = 60 / song.bpm; bar = 0; rep = 0;
+    stage.style.setProperty('--bt', beat + 's');
+    const title = `♪ Now playing: ${song.title} (rock version)`;
+    setTimeout(() => { if (playing) $('#bandNow').textContent = title; }, Math.max(0, (nextBar - A.currentTime) * 1000));
+    gaTrack('band_song', { song: song.title });
+  }
+  function tick() {
+    while (playing && nextBar < A.currentTime + .35) {
+      scheduleBar(nextBar); nextBar += song.bpb * beat; bar++;
+      if (bar >= song.roots.length) { bar = 0; rep++; if (rep >= 2) pickSong(); }
+    }
+  }
+  const HUES = [0, 45, 140, 200, 280, 330];
+  function frame() {
+    if (!playing) return;
+    const now = A.currentTime;
+    while (marks.length && marks[0].t <= now) {
+      const m = marks.shift();
+      if (m.down) $$('.beams i').forEach((b, i) => b.style.setProperty('--h', HUES[(m.bar + i * 2) % HUES.length]));
+      if (Math.random() < .55) floatNote();
+    }
+    raf = requestAnimationFrame(frame);
+  }
+  function floatNote(el) {
+    const ps = $$('.performer'), p = el || ps[Math.floor(Math.random() * ps.length)], st = $('#bandStage');
+    const r = p.getBoundingClientRect(), sr = st.getBoundingClientRect(), n = document.createElement('span');
+    n.className = 'mnote'; n.textContent = ['♪', '♫', '♬', '★'][Math.floor(Math.random() * 4)];
+    n.style.left = (r.left - sr.left + r.width * (.2 + Math.random() * .6)) + 'px'; n.style.top = (r.top - sr.top + 6) + 'px';
+    st.appendChild(n); setTimeout(() => n.remove(), 1450);
+  }
+  function start(idx) {
+    if (!ready()) { toast('Turn on Sound (top of the page) to hear the band'); return false; }
+    if (SND.musicOn()) { SND.setMusic(false); window.dispatchEvent(new Event('music-stopped')); }
+    playing = true; marks = []; nextBar = A.currentTime + .15;
+    pickSong(idx);
+    // drummer count-in: 4 sticks
+    for (let i = 0; i < 4; i++) osc('square', 1800, nextBar + i * beat, .03, env(nextBar + i * beat, .04, .12, bus));
+    nextBar += 4 * beat;
+    clearInterval(timer); timer = setInterval(tick, 60); tick();
+    stage.classList.add('playing'); paint(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+    gaTrack('band_play'); return true;
+  }
+  function stop() {
+    if (!playing) return; playing = false; clearInterval(timer); cancelAnimationFrame(raf); marks = [];
+    if (bus) { try { bus.gain.setTargetAtTime(0, A.currentTime, .05); const old = bus; setTimeout(() => old.disconnect(), 400); } catch (e) {} bus = null; shaper = null; }
+    stage.classList.remove('playing'); paint(); $('#bandNow').textContent = 'Show paused. Tap a band member for a solo!';
+  }
+  function paint() { $('#bandPlay').setAttribute('aria-pressed', String(playing)); $('#bandPlayIcon').textContent = playing ? '⏸' : '▶'; $('#bandPlayLbl').textContent = playing ? 'Pause the show' : 'Start the show'; }
+  const RIFFS = {
+    santa: (t) => { [64, 67, 69, 67, 71, 69, 67, 64, 72].forEach((m, i) => { lead(t + i * .11, m + 12, .14); chug(t + i * .11, m, .1, .08); }); },
+    rudolph: (t) => { [36, 36, 43, 48, 46, 43, 41, 36].forEach((m, i) => bassNote(t + i * .14, m, .13)); },
+    snowman: (t) => { for (let i = 0; i < 8; i++) snare(t + i * .08); kick(t + .64); crash(t + .64); },
+    elf: (t) => { [60, 64, 67, 72, 76, 79, 84, 79, 76, 72].forEach((m, i) => lead(t + i * .08, m, .2, 'keys')); },
+    penguin: (t) => { [67, 70, 72, 74, 72, 70, 67].forEach((m, i) => lead(t + i * .15, m, .2, 'sax')); },
+    ginger: (t) => { [72, 76, 79, 76, 84].forEach((m, i) => lead(t + i * .16, m, i === 4 ? .6 : .18, 'sax')); }
+  };
+  function solo(id, el) {
+    if (!ready()) { toast('Turn on Sound (top of the page) to hear the band'); return; }
+    try { RIFFS[id](A.currentTime + .03); } catch (e) {}
+    el.classList.remove('solo'); void el.offsetWidth; el.classList.add('solo'); setTimeout(() => el.classList.remove('solo'), 700);
+    for (let i = 0; i < 3; i++) setTimeout(() => floatNote(el), i * 160);
+    if (!playing) $('#bandNow').textContent = `${BANDMATES.find(m => m.id === id).name} plays a solo! Tap “Start the show” for the full band.`;
+    gaTrack('band_solo', { character: id });
+  }
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+  return { start, stop, solo, isPlaying: () => playing, next: () => { if (playing) { stop(); } return start(); } };
+})();
+$('#bandPlay').addEventListener('click', () => BAND.isPlaying() ? BAND.stop() : BAND.start());
+$('#bandNext').addEventListener('click', () => BAND.next());
+$('#bandRow').addEventListener('click', e => { const p = e.target.closest('[data-mate]'); if (p) BAND.solo(p.dataset.mate, p); });
 
 /* ---------- go ---------- */
 syncChips(); render(); sync();
