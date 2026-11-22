@@ -1159,6 +1159,7 @@ const CONFIG = {
   currency: "₹",
   shipHome: "Maharashtra", shipHomeRate: 120, shipOtherRate: 150,  // rupees per kg
   christmas: "2026-12-25T00:00:00+05:30",
+  metaPixelId: "2616097948834687",   // Meta Pixel ID from Events Manager. Leave empty to turn the Pixel off.
   ga4Id: "G-1XWSGB7HWW"   // Google Analytics 4 Measurement ID, looks like "G-ABC123XYZ". Leave empty to turn analytics off.
 };
 /* ======================================= */
@@ -1283,7 +1284,7 @@ const SND = (() => {
 })();
 
 /* ---------- Google Analytics 4 (only runs when CONFIG.ga4Id is set and the page is on your own website) ---------- */
-const gaTrack = (() => {
+const gaTrack0 = (() => {
   const id = (CONFIG.ga4Id || '').trim();
   if (!/^G-[A-Z0-9]+$/i.test(id) || !/^https?:$/.test(location.protocol)) return () => {};
   window.dataLayer = window.dataLayer || [];
@@ -1301,6 +1302,34 @@ const gaTrack = (() => {
   document.head.appendChild(s);
   return (name, params = {}) => { try { gtag('event', name, params); } catch (e) {} };
 })();
+/* ---------- Meta Pixel (only on your own website) ---------- */
+const metaTrack = (() => {
+  const id = String(CONFIG.metaPixelId || '').trim();
+  if (!/^\d{10,20}$/.test(id) || !/^https?:$/.test(location.protocol)) return () => {};
+  !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+    if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
+    s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', id); fbq('track', 'PageView');
+  const ids = p => (p.items || []).map(i => String(i.item_id));
+  const MAP = {
+    view_item: p => ['ViewContent', { content_ids: ids(p), content_name: p.items && p.items[0] && p.items[0].item_name, content_type: 'product', value: p.value, currency: 'INR' }],
+    add_to_cart: p => ['AddToCart', { content_ids: ids(p), content_name: p.items && p.items[0] && p.items[0].item_name, content_type: 'product', value: p.value, currency: 'INR' }],
+    add_to_wishlist: p => ['AddToWishlist', { content_ids: ids(p), value: p.value, currency: 'INR' }],
+    checkout_details: p => ['InitiateCheckout', { content_ids: ids(p), num_items: p.num_items, value: p.value, currency: 'INR' }],
+    add_payment_info: p => ['AddPaymentInfo', { value: p.value, currency: 'INR' }],
+    whatsapp_order: p => ['Lead', { value: p.value, currency: 'INR', content_name: 'WhatsApp order' }],
+    whatsapp_chat: () => ['Contact', {}],
+    ask_santa: p => ['Search', { search_string: p.question }]
+  };
+  const CUSTOM = { share: 'Share', instagram_click: 'InstagramClick', store_map_click: 'StoreMapClick', order_desk_copy: 'OrderDeskCopy', buy_now: 'BuyNow', pay_choice: 'PayChoice' };
+  return (name, params = {}) => { try {
+    if (MAP[name]) { const [ev, data] = MAP[name](params); fbq('track', ev, data); }
+    else if (CUSTOM[name]) fbq('trackCustom', CUSTOM[name], params);
+  } catch (e) {} };
+})();
+const gaTrack = (name, params) => { gaTrack0(name, params); metaTrack(name, params); };
+const viewed = new Set();
+function trackView(p, v) { if (!p || viewed.has(p.id)) return; viewed.add(p.id); gaTrack('view_item', { currency: 'INR', value: (v && v.price) || p.price, items: [gaItem(p, v)] }); }
 const gaItem = (p, v, q = 1) => ({ item_id: p.id, item_name: p.name + (v ? ' (' + v.name + ')' : ''), item_category: MATLABEL ? (MATLABEL[p.mat] || p.mat) : p.mat, price: (v && v.price) || p.price, quantity: q });
 
 const placeholder = /X/i.test(CONFIG.whatsapp) || CONFIG.upiId.startsWith('yourname');
@@ -1673,7 +1702,7 @@ $('#grid').addEventListener('click', e => {
   const sw = e.target.closest('[data-sw]');
   if (sw) {
     const p = byId[sw.dataset.sw], i = +sw.dataset.i, art = sw.closest('.card');
-    selVar[p.id] = i;
+    selVar[p.id] = i; trackView(p, p.variants[i]);
     if (p.variants[i].img) {
       const tr = $('.gal-track', art), want = p.variants[i].img;
       const idx = tr ? [...tr.children].findIndex(im => im.getAttribute('src') === want) : -1;
@@ -1752,7 +1781,7 @@ addEventListener('hashchange', openFromHash); addEventListener('load', openFromH
 function buyNow(id, btn) {
   const ok = cart[id] ? true : addItem(id, btn);
   if (!ok) return;
-  gaTrack('buy_now', { item: byId[pidOf(id)].name }); const tt = $('#toast'); if (tt) tt.classList.remove('on');
+  trackView(byId[pidOf(id)]); gaTrack('buy_now', { item: byId[pidOf(id)].name }); const tt = $('#toast'); if (tt) tt.classList.remove('on');
   openCart(); goStep(Object.keys(cart).length > 1 ? 1 : formValid() ? 3 : 2);
 }
 $('#lines').addEventListener('click', e => {
@@ -2295,6 +2324,7 @@ function goStep(n) {
   $('#stepNote').textContent = empty ? '' : NOTES[n];
   $('#sendHint').hidden = true;
   $('#dbody').scrollTop = 0;
+  if (n === 2 && !goStep.ic) { goStep.ic = 1; const t = totals(); gaTrack('checkout_details', { value: t.grand, num_items: t.n, items: t.l.map(x => gaItem(x.p, x.v, x.q)) }); }
   if (n === 3) { sync(); const t = totals(); gaTrack('add_payment_info', { currency: 'INR', value: t.grand, payment_type: 'UPI' }); }
 }
 $('#stepNext').addEventListener('click', () => { if (totals().l.length) { SND.play('pop'); goStep(2); setTimeout(() => { const f = FIELDS.find(([id, ok]) => !ok($('#' + id).value)); if (f && matchMedia('(min-width:521px)').matches) $('#' + f[0]).focus({ preventScroll: true }); }, 200); } });
@@ -2513,11 +2543,13 @@ $('#bandRow').addEventListener('click', e => { const p = e.target.closest('[data
 document.addEventListener('scroll', e => {
   const tr = e.target; if (!(tr instanceof Element) || !tr.classList.contains('gal-track')) return;
   const n = tr.children.length, i = Math.min(n - 1, Math.round(tr.scrollLeft / tr.clientWidth)), g = tr.parentElement;
+  if (i > 0) { const card = g.closest('.card'); if (card) trackView(PRODUCTS.find(x => x.slug === card.id)); }
   $$('.gal-dots i', g).forEach((d, j) => d.classList.toggle('on', j === i)); const c = $('.gal-count', g); if (c) c.textContent = `${i + 1}/${n}`;
 }, true);
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-gal]'); if (!b) return; e.preventDefault();
   const tr = $('.gal-track', b.parentElement), n = tr.children.length, i = Math.round(tr.scrollLeft / tr.clientWidth);
+  { const card = b.closest('.card'); if (card) trackView(PRODUCTS.find(x => x.slug === card.id)); }
   const to = (i + +b.dataset.gal + n) % n; tr.scrollTo({ left: to * tr.clientWidth, behavior: RM ? 'auto' : 'smooth' }); SND.play('tick', to + 3);
 });
 
